@@ -252,7 +252,7 @@ int main(int argc, char *argv[])
       signalHistory.insertData(weatherData, strength_dbm, cnr_db, adapterString);
 
       cout << "Inserted data at time: " << time(0) << endl;
-      cout << "Signal Strength (dBm): " << NULL << ", CNR (dB): " << NULL << endl;
+      cout << "Signal Strength (dBm): " << strength_dbm << ", CNR (dB): " << cnr_db << endl;
       weatherData.PrintWeather();
     }
     this_thread::sleep_for(log_rate);
