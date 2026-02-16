@@ -119,7 +119,7 @@ bool getDvbValues(string adapterString, float &strength_dbm, float &cnr_db, fe_s
   return true;
 }
 
-bool argHandler(int argc, char *argv[], string &adapterString, string &outputName, double &targetLatitude, double &targetLongitude, chrono::seconds &log_rate, bool &testMode)
+bool argHandler(int argc, char *argv[], string &targetAdapter, string& targetFrontend, string &outputName, double &targetLatitude, double &targetLongitude, chrono::seconds &log_rate, bool &testMode)
 {
   bool success = true;
   for (int i = 1; i < argc; ++i)
@@ -129,7 +129,8 @@ bool argHandler(int argc, char *argv[], string &adapterString, string &outputNam
     {
       cout << "Usage: " << argv[0] << " [options]" << endl;
       cout << "Options:" << endl;
-      cout << "  --adapter <path>        Path to DVB adapter (default: /dev/dvb/adapter0/frontend0)" << endl;
+      cout << "  --adapter <value>        Path to DVB adapter (default: 0)" << endl;
+      cout << "  --frontend <value>       Path to DVB frontend (default: 0)" << endl;
       cout << "  --output <name>         Output database name (default: weatherdata)" << endl;
       cout << "  --latitude <value>      Target latitude (default: 63.06)" << endl;
       cout << "  --longitude <value>     Target longitude (default: 21.37)" << endl;
@@ -139,7 +140,11 @@ bool argHandler(int argc, char *argv[], string &adapterString, string &outputNam
     }
     else if (arg == "--adapter" && i + 1 <= argc)
     {
-      adapterString = argv[++i];
+      targetAdapter = argv[++i];
+    }
+    else if (arg == "--frontend" && i + 1 <= argc)
+    {
+      targetFrontend = argv[++i];
     }
     else if (arg == "--output" && i + 1 <= argc)
     {
@@ -147,11 +152,27 @@ bool argHandler(int argc, char *argv[], string &adapterString, string &outputNam
     }
     else if (arg == "--latitude" && i + 1 <= argc)
     {
-      targetLatitude = stod(argv[++i]);
+      string tempString = argv[++i];
+      for (auto i = tempString.begin(); i != tempString.end(); ++i)
+      {
+        if (*i == ',')
+        {
+          *i = '.';
+        }
+      }
+      targetLatitude = stod(tempString);
     }
     else if (arg == "--longitude" && i + 1 <= argc)
     {
-      targetLongitude = stod(argv[++i]);
+      string tempString = argv[++i];
+      for (auto i = tempString.begin(); i != tempString.end(); ++i)
+      {
+        if (*i == ',')
+        {
+          *i = '.';
+        }
+      }
+      targetLongitude = stod(tempString);
     }
     else if (arg == "--lograte" && i + 1 <= argc)
     {
@@ -179,21 +200,24 @@ int main(int argc, char *argv[])
   float cnr_db;
 
   // Variables
-  string adapterString = "/dev/dvb/adapter0/frontend0";
+  string targetAdapter = "0";
+  string targetFrontend = "0";
   string outputName = "weatherdata";
   chrono::seconds log_rate = 60s * 15;
   double targetLatitude = 63.06;
   double targetLongitude = 21.37;
   bool testMode = false;
-  string weather_api_url ="";
-  
+  string adapterString;
+  string weather_api_url = "";
+
   // Handle command line arguments
-  if (!argHandler(argc, argv, adapterString, outputName, targetLatitude, targetLongitude, log_rate, testMode))
+  if (!argHandler(argc, argv, targetAdapter, targetFrontend, outputName, targetLatitude, targetLongitude, log_rate, testMode))
   {
     return 1;
   }
   else
   {
+    adapterString = "/dev/dvb/adapter" + targetAdapter + "/frontend" + targetFrontend;
     weather_api_url = "https://api.open-meteo.com/v1/forecast?latitude=" + to_string(targetLatitude) + "&longitude=" + to_string(targetLongitude) + "&current=temperature_2m,relative_humidity_2m,precipitation,cloud_cover&timeformat=unixtime";
     cout << "Fetching weather data from API: " << weather_api_url << endl;
     cout << "Using adapter: " << adapterString << endl;
