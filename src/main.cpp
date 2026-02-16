@@ -196,8 +196,8 @@ bool argHandler(int argc, char *argv[], string &targetAdapter, string& targetFro
 int main(int argc, char *argv[])
 {
   fe_status_t status;
-  float strength_dbm;
-  float cnr_db;
+  float strength_dbm = 0.0;
+  float cnr_db = 0.0;
 
   // Variables
   string targetAdapter = "0";
