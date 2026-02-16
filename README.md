@@ -23,6 +23,7 @@ List of valid arguments:
 ```
 --help
 --adapter
+--frontend
 --output
 --latitude
 --longitude
@@ -48,8 +49,8 @@ Options:
 #### Help
 The ``--help`` argument generates a list of valid arguments, as seen in the example above. 
 
-#### Adapter
-The ``--adapter`` argument changes the value of the adapter path, this can be changed in order to log the signal from a specific DVB card or a specific frontend, this is also useful for comparing two devices.
+#### Adapter and frontend
+The ``--adapter`` and ``--frontend`` arguments change the value of the adapter path, this can be changed in order to log the signal from a specific DVB card or a specific frontend, this is also useful for comparing two devices.
 
 #### Output
 The ``--output`` argument changes the name of the log file, the file extension ``.db`` is automatically added. This feature is useful for keeping track of multiple logs.
