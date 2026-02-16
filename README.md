@@ -36,7 +36,8 @@ Returns:
 ```
 Usage: ./dvb-logger [options]
 Options:
-  --adapter <path>        Path to DVB adapter (default: /dev/dvb/adapter0/frontend0)
+  --adapter <value>       Path to DVB adapter (default: 0)
+  --frontend <value>      Path to DVB frontend (default: 0)
   --output <name>         Output database name (default: weatherdata)
   --latitude <value>      Target latitude (default: 63.06)
   --longitude <value>     Target longitude (default: 21.37)
