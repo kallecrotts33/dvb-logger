@@ -69,6 +69,6 @@ The ``--test`` argument makes the program run in `test mode`, this simply ignore
 Command: ``./dvb-logger --lograte 3600 --latitude 37.22 --longitude -122.4 --output "my_output"``
 
 ### Example 2, the user wants to log two separate signals to two different files.
-In one terminal run: ``./dvb-logger --adapter "/dev/dvb/adapter0/frontend0" --output "adapter0"``
-In the second terminal run: ``./dvb-logger --adapter "/dev/dvb/adapter1/frontend0" --output "adapter1"``
+In one terminal run: ``./dvb-logger --adapter 0 --output "adapter0"``
+In the second terminal run: ``./dvb-logger --adapter 1 --output "adapter1"``
 
